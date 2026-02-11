@@ -190,12 +190,16 @@ def _fetch_monthly_revenue(session: requests.Session) -> Dict[str, Dict[str, str
         r = session.get(url, timeout=30)
         r.raise_for_status()
         data = r.json()
-        return data if isinstance(data, list) else []
+        if isinstance(data, list):
+            return data
+        print(f"[WARN] 月營收 API 回傳非 list: {url} → type={type(data)}")
+        return []
 
     for url in [TWSE_MONTHLY_REVENUE_URL, TPEX_MONTHLY_REVENUE_URL]:
         try:
             data = _load(url)
-        except Exception:
+        except Exception as e:
+            print(f"[WARN] 月營收 API 失敗: {url} → {type(e).__name__}: {e}")
             continue
 
         for row in data:
@@ -314,8 +318,8 @@ def main() -> None:
 
     all_news: List[NewsItem] = []
     for s in stocks:
-        code = str(s.get("證券代號", "")).strip()
-        name = str(s.get("證券名稱", "")).strip()
+        code = str(s.get("code") or s.get("證券代號") or "").strip()
+        name = str(s.get("name") or s.get("證券名稱") or "").strip()
         if not code or not name:
             continue
 
