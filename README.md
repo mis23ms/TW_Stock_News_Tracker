@@ -7,6 +7,40 @@ TW_Stock_News_Tracker
 - 每檔 3 則新聞的詳細報告
 - 追加月營收摘要（單月 + 累計）
 
+TW_Stock_News_Tracker/
+├─ README.md
+├─ index.md                      # GitHub Pages 首頁（自動更新）
+├─ reports/                      # 每次執行產出的報告（自動新增/更新）
+│  ├─ 2026-02-11.md
+│  └─ 2026-02-18.md
+├─ config/
+│  └─ tw_stocks.json             # 追蹤股票清單（你維護）
+├─ scripts/
+│  └─ tw_news_tracker.py         # 主程式（Actions 會跑這支）
+└─ .github/
+   └─ workflows/
+      └─ tw-news-tracker.yml     # 排程與自動 commit
+
+每個檔案在做什麼（README 用）
+
+config/tw_stocks.json：股票清單（證券代號、證券名稱、industry…）
+
+scripts/tw_news_tracker.py：
+
+抓 Google News RSS（7 天內、每檔 3 則、include+exclude）
+
+抓月營收（應該從公開 OpenAPI）
+
+產生 reports/YYYY-MM-DD.md
+
+更新 index.md 指向最新報告
+
+.github/workflows/tw-news-tracker.yml：每週六中午跑，跑完 commit 回 repo
+
+reports/：歷史報告存放處
+
+index.md：Pages 顯示的首頁
+
 ## 資料來源
 - 新聞：Google News RSS（XML）
 - 月營收：TWSE OpenAPI（公開發行公司每月營業收入彙總表）
