@@ -193,9 +193,9 @@ def _fetch_monthly_revenue(session: requests.Session) -> Dict[str, Dict[str, str
         return data if isinstance(data, list) else []
 
     for url in [TWSE_MONTHLY_REVENUE_URL, TPEX_MONTHLY_REVENUE_URL]:
-        try:
+try:
             data = _load(url)
-    except Exception as e:
+        except Exception as e:
             print(f"[WARN] 月營收 API 失敗: {url} → {e}")
             continue
 
