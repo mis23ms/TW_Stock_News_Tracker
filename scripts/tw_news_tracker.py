@@ -195,8 +195,9 @@ def _fetch_monthly_revenue(session: requests.Session) -> Dict[str, Dict[str, str
     for url in [TWSE_MONTHLY_REVENUE_URL, TPEX_MONTHLY_REVENUE_URL]:
         try:
             data = _load(url)
-        except Exception:
-            continue
+    except Exception as e:
+        print(f"[WARN] 月營收 API 失敗: {url} → {e}")
+        continue
 
         for row in data:
             code = str(row.get("公司代號", "")).strip()
